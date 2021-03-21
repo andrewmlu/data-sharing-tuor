@@ -43,6 +43,7 @@ def main():
         cfg)
 
     indices_each_node_case_copy_init = copy.deepcopy(indices_each_node_case)
+
     dim_w = model.get_weight_dimension(train_image_all, train_label_all)
 
     # Split dataset into the focus part and the noise part, ( this is useful when running different baselines )

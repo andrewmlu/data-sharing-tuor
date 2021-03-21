@@ -1,4 +1,4 @@
-from util.data import select_intersection, get_train_label_orig_from_hot, get_assigment_node, get_assignment_index_each_node, get_indices_each_node_case2, get_lists_indices_per_label, get_label_missing, write_dictionary_data, write_dictionary_validation, get_n_sample_to_keep, get_training_testing_partition,get_index_from_one_hot_label
+from util.data import select_intersection, get_train_label_orig_from_hot, get_assigment_node, get_assignment_index_each_node, get_lists_indices_per_label, get_label_missing, write_dictionary_data, write_dictionary_validation, get_n_sample_to_keep, get_training_testing_partition,get_index_from_one_hot_label
 import copy
 import numpy as np
 import math
@@ -15,8 +15,9 @@ keep_track_indices_dataset_test = []
 
 
 def multiple_to_single_dataset(cfg):
-    cfg.case = 0
-    cfg.maxCase = 1
+    cfg.case = 1
+    cfg.maxCase = 2
+
     counter_dataset = 0
 
     indices_each_node_case = []
@@ -27,23 +28,18 @@ def multiple_to_single_dataset(cfg):
         for j in range(0, cfg.maxCase):
             indices_each_node_case[j].append([])
 
+
     for dataset in cfg.dataset_list:
 
         indices_init_train = len(train_label_all)
         indices_init_test = len(test_label_all)
 
-        if dataset == 'EMNIST' or dataset == 'EMNIST30' or dataset == 'EMNIST_DEFAULT':
-            train_image, train_label, test_image, test_label, train_label_orig, test_client_to_data_dict = get_data(
-                dataset,
-                cfg.total_data,
-                cfg.dataset_file_path,
-                use_test_client_to_data_dict=True)
-        else:
-            train_image, train_label, test_image, test_label, train_label_orig = get_data(
-                dataset,
-                cfg.total_data,
-                cfg.dataset_file_path,
-                use_test_client_to_data_dict=False)
+
+        train_image, train_label, test_image, test_label, train_label_orig = get_data(
+            dataset,
+            cfg.total_data,
+            cfg.dataset_file_path,
+            use_test_client_to_data_dict=False)
 
         # make sure every dataset has train_label_orig
         if len(train_label_orig) == 0:
@@ -54,28 +50,23 @@ def multiple_to_single_dataset(cfg):
         test_image_all.extend(test_image)
         test_label_all.extend(test_label)
 
-        #########################################################################################
-        # new part
 
-        if dataset == 'EMNIST' or dataset == 'EMNIST30' or dataset == 'EMNIST_DEFAULT':
-            assignment_index_each_node = get_indices_each_node_case2(
-                cfg.n_nodes, cfg.maxCase, train_label_orig)
 
-        else:
-            number_element_per_node_this_dataset = get_assigment_node(
-                train_label_orig, cfg.n_nodes)
+        number_element_per_node_this_dataset = get_assigment_node(
+            train_label_orig, cfg.n_nodes)
 
-            assignment_index_each_node, d = get_assignment_index_each_node(
-                train_label_orig,
-                np.arange(indices_init_train, len(train_label_all)),
-                number_element_per_node_this_dataset, cfg.n_nodes,
-                counter_dataset)
-            counter_dataset += 1
-            np.save(
-                cfg.results_file_path + '/d-' + str(counter_dataset) + '.npy',
-                d)
+        assignment_index_each_node, d = get_assignment_index_each_node(cfg,
+            train_label_orig,
+            np.arange(indices_init_train, len(train_label_all)),
+            number_element_per_node_this_dataset, cfg.n_nodes,
+            counter_dataset)
+        counter_dataset += 1
+        np.save(
+            cfg.results_file_path + '/d-' + str(counter_dataset) + '.npy',
+            d)
 
-        # list of dimension number of nodes that contains index(shift) assign to different nodes
+
+
         for c in range(0, cfg.maxCase):
             for i in range(0, cfg.n_nodes):
                 indices_each_node_case[c][i].extend(
@@ -211,6 +202,7 @@ def train_validation(indices_each_node_case_copy_init, model, dim_w, sim, cfg,
                                    train_label_all[s]))
 
     sorted_d = sorted(dic_ind_grad.items(), key=operator.itemgetter(1))
+    print('here',sorted_d)
 
     write_dictionary_data(cfg.results_file_path, '/dico-order.csv', sorted_d)
 

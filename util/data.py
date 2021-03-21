@@ -65,8 +65,7 @@ def adapt_test_to_validation(label_missing_in_validation,list_indices_test,test_
     # print('no label',no_label)
 
     for i in label_missing_in_validation:
-        #print('len i ', len(list_indices_test[i]))
-        print('list indices', list_indices_test[i])
+
         all_indices_to_remove_from_test.extend(list_indices_test[i])
 
     test_image_no_validation_clean = [test_image_no_validation[i] for i in range(0, len(test_image_no_validation)) if
@@ -153,7 +152,7 @@ def get_n_sample_to_keep_from_save_file(results_file_path,total_n_sample): # sel
     return n_sample_to_keep,indices_to_keep
 
 def get_n_sample_to_keep(results_file_path,total_n_sample,sorted_d): # select n_sample to keep
-
+    print('sorted,',sorted_d)
     distance_list_validation = []
     with open(str(results_file_path) + '/dico-validation.csv') as f:
         for line in f:
@@ -204,10 +203,12 @@ def get_n_sample_to_keep(results_file_path,total_n_sample,sorted_d): # select n_
 
 
     n_sample_to_keep=steps[np.argmin(max_each_cut)]
+    print('n sample to keep',n_sample_to_keep)
 
     indices_to_keep = []
     for i in range(0, n_sample_to_keep):
         # print(i)
+
         indices_to_keep.append(sorted_d[i][0])
         # indices_to_keep.append(indices_list[i])
     return n_sample_to_keep,indices_to_keep
@@ -241,49 +242,6 @@ def get_train_label_orig_from_hot(train_label):
 
     return train_label_orig
 
-
-
-def get_assigment_node(train_label_orig,n_nodes):
-
-    # function that given  the len of an arary and number of nodes, find the number of elments to put in each node (not balanced)
-
-
-    # first we want to know the number of elemenent per nodes
-
-    len_dataset=len(train_label_orig)
-    len_black_interval=int(len_dataset/n_nodes)
-
-    interval_black_interm = np.arange(0,len_dataset, len_black_interval)
-
-    if len(interval_black_interm)<n_nodes+1:
-        interval_black=(interval_black_interm.tolist())
-        interval_black.append(len_dataset)
-    else:
-        interval_black = (interval_black_interm.tolist())
-
-
-    blue_internval=[]
-    for i in range(0,len(interval_black)-1):
-        blue_internval.append(int((interval_black[i]+interval_black[i+1])/2))
-
-
-    # select number of nodes
-    x_i=[]
-    #borne inferieur
-    x_i.append(0)
-    for i in range(0,len(blue_internval)-1):
-        x_i.append(random.randint(blue_internval[i],blue_internval[i+1]))
-    # borne superieur
-    x_i.append(len_dataset)
-
-
-    element_per_node=[]
-    for j in range(0,len(x_i)-1):
-        element_per_node.append(x_i[j+1]-x_i[j])
-
-
-    return element_per_node
-
 def get_assignment_index_each_node(train_label_orig,indices_shift,number_element_per_node_this_dataset,n_nodes,counter_dataset):
     d = {}
     maxCase=2
@@ -314,7 +272,7 @@ def get_assignment_index_each_node(train_label_orig,indices_shift,number_element
     #### case 1
 
     unique_label=np.unique(train_label_orig)
-    #print('unique label',unique_label)
+    print('unique label',unique_label)
     indices_by_label=[]
     for i in range(0,len(unique_label)):
         indices_by_label.append([])
@@ -372,7 +330,50 @@ def get_assignment_index_each_node(train_label_orig,indices_shift,number_element
 
     return indexesEachNodeCase,d
 
-def get_indices_each_node_case2(n_nodes, maxCase, label_list):
+def get_assigment_node(train_label_orig,n_nodes):
+
+    # function that given  the len of an arary and number of nodes, find the number of elments to put in each node (not balanced)
+
+
+    # first we want to know the number of elemenent per nodes
+
+    len_dataset=len(train_label_orig)
+    len_black_interval=int(len_dataset/n_nodes)
+
+    interval_black_interm = np.arange(0,len_dataset, len_black_interval)
+
+    if len(interval_black_interm)<n_nodes+1:
+        interval_black=(interval_black_interm.tolist())
+        interval_black.append(len_dataset)
+    else:
+        interval_black = (interval_black_interm.tolist())
+
+
+    blue_internval=[]
+    for i in range(0,len(interval_black)-1):
+        blue_internval.append(int((interval_black[i]+interval_black[i+1])/2))
+
+
+    # select number of nodes
+    x_i=[]
+    #borne inferieur
+    x_i.append(0)
+    for i in range(0,len(blue_internval)-1):
+        x_i.append(random.randint(blue_internval[i],blue_internval[i+1]))
+    # borne superieur
+    x_i.append(len_dataset)
+
+
+    element_per_node=[]
+    for j in range(0,len(x_i)-1):
+        element_per_node.append(x_i[j+1]-x_i[j])
+
+
+    return element_per_node
+
+def get_assignment_index_each_node(cfg,train_label_orig,indices_shift,number_element_per_node_this_dataset,n_nodes,counter_dataset):
+    d = {}
+    maxCase=cfg.maxCase
     indexesEachNodeCase = []
     for i in range(0, maxCase):
         indexesEachNodeCase.append([])
@@ -381,41 +382,213 @@ def get_indices_each_node_case2(n_nodes, maxCase, label_list):
         for j in range(0, maxCase):
             indexesEachNodeCase[j].append([])
 
-    # indexesEachNode is a big list that contains N-number of sublists. Sublist n contains the indexes that should be assigned to node n
+    #randomly shift indices for case0
+    list= np.arange(0,len(train_label_orig))
+    random.shuffle(list)
+    train_label_orig=[train_label_orig[i] for i in list]
+    indices_shift=[indices_shift[i] for i in list]
 
-    minLabel = min(label_list)
-    maxLabel = max(label_list)
-    numLabels = maxLabel - minLabel + 1
+    # case 0
+    for i in range(0,n_nodes):
 
-    for i in range(0, len(label_list)):
-
-        # case 1
-
-        #randomperm = np.random.permutation(len(train))
-        #indexesEachNodeCase[0][(i % n_nodes)].append(randomperm[i])
-        indexesEachNodeCase[0][(i % n_nodes)].append(i)
-        # if i % n_nodes==0:
-        #     print('-----')
-        #     print('label',label_list[i])
-        #     print('indice',i)
-        #     print('-----')
-
-        # case 2
-
-        tmp_target_node=int((label_list[i]-minLabel) %n_nodes)
-        if n_nodes>numLabels:
-            tmpMinIndex=0
-            tmpMinVal=math.inf
-            for n in range(0,n_nodes):
-                if (n)%numLabels==tmp_target_node and len(indexesEachNodeCase[1][n])<tmpMinVal:
-                    tmpMinVal=len(indexesEachNodeCase[1][n])
-                    tmpMinIndex=n
-            tmp_target_node=tmpMinIndex
-
-        indexesEachNodeCase[1][tmp_target_node].append(i)
+        j=0
+        while len(indexesEachNodeCase[0][i])<(number_element_per_node_this_dataset[i]):
+            indexesEachNodeCase[0][i].append(indices_shift[j])
+            j=j+1
 
 
-    return indexesEachNodeCase
+
+    #### case 1
+
+    unique_label=np.unique(train_label_orig)
+
+    indices_by_label=[]
+    for i in range(0,len(unique_label)):
+        indices_by_label.append([])
+    for j in range(0, len(unique_label)):
+        for i in range(0,len(train_label_orig)):
+            if train_label_orig[i]==j:
+                indices_by_label[j].append(indices_shift[i])
+
+
+
+
+    if len(unique_label)==n_nodes:
+        for i in range(0,n_nodes):
+            indexesEachNodeCase[1][i].extend(indices_by_label[i])
+
+
+    elif n_nodes>len(unique_label):
+        shift=counter_dataset
+        # mapping nodes into labels
+
+        for i in range(0,len(unique_label)):
+            d[i]=[]
+
+        for i in range(0,n_nodes):
+            j=i+shift
+            d[j%len(unique_label)].append(i)
+
+
+        for i in range(0,len(unique_label)):
+
+            #tell us how many instance each node  (that was assigned this label) should have of this label
+            number_element_per_node_this_label = get_assigment_node(indices_by_label[i], len(d[i]))
+            #print('number',number_element_per_node_this_label)
+            #print('d[i]',d[i])
+            for n in range(0,len(d[i])):
+
+                #print(d[i])
+
+                j=0
+
+                while len(indexesEachNodeCase[1][d[i][n]]) < (number_element_per_node_this_label[n]):
+
+                    indexesEachNodeCase[1][d[i][n]].append(indices_by_label[i][j])
+                    j = j + 1
+                    #print('j',j)
+
+
+
+
+            d[i].append(number_element_per_node_this_label)
+
+        #print('dico',d)
+
+    return indexesEachNodeCase,d
+
+# def get_assignment_index_each_node(train_label_orig,indices_shift,number_element_per_node_this_dataset,n_nodes,counter_dataset):
+#     d = {}
+#     maxCase=4
+#     indexesEachNodeCase = []
+#     for i in range(0, maxCase):
+#         indexesEachNodeCase.append([])
+#
+#     for i in range(0, n_nodes):
+#         for j in range(0, maxCase):
+#             indexesEachNodeCase[j].append([])
+#
+#     #randomly shift indices for case0
+#     list= np.arange(0,len(train_label_orig))
+#     random.shuffle(list)
+#     train_label_orig=[train_label_orig[i] for i in list]
+#     indices_shift=[indices_shift[i] for i in list]
+#
+#     # case 0
+#     for i in range(0,n_nodes):
+#
+#         j=0
+#         while len(indexesEachNodeCase[0][i])<(number_element_per_node_this_dataset[i]):
+#             indexesEachNodeCase[0][i].append(indices_shift[j])
+#             j=j+1
+#
+#
+#
+#     #### case 1
+#
+#     unique_label=np.unique(train_label_orig)
+#     #print('unique label',unique_label)
+#     indices_by_label=[]
+#     for i in range(0,len(unique_label)):
+#         indices_by_label.append([])
+#     for j in range(0, len(unique_label)):
+#         for i in range(0,len(train_label_orig)):
+#             if train_label_orig[i]==j:
+#                 indices_by_label[j].append(indices_shift[i])
+#
+#     #print('indices by label',len(indices_by_label))
+#     #print(indices_by_label[61])
+#
+#
+#
+#     if len(unique_label)==n_nodes:
+#         for i in range(0,n_nodes):
+#             indexesEachNodeCase[1][i].extend(indices_by_label[i])
+#
+#
+#     elif n_nodes>len(unique_label):
+#         shift=counter_dataset
+#         # mapping nodes into labels
+#
+#         for i in range(0,len(unique_label)):
+#             d[i]=[]
+#
+#         for i in range(0,n_nodes):
+#             j=i+shift
+#             d[j%len(unique_label)].append(i)
+#
+#
+#         for i in range(0,len(unique_label)):
+#
+#             #tell us how many instance each node  (that was assigned this label) should have of this label
+#             number_element_per_node_this_label = get_assigment_node(indices_by_label[i], len(d[i]))
+#             #print('number',number_element_per_node_this_label)
+#             #print('d[i]',d[i])
+#             for n in range(0,len(d[i])):
+#
+#                 #print(d[i])
+#
+#                 j=0
+#
+#                 while len(indexesEachNodeCase[1][d[i][n]]) < (number_element_per_node_this_label[n]):
+#
+#                     indexesEachNodeCase[1][d[i][n]].append(indices_by_label[i][j])
+#                     j = j + 1
+#                     #print('j',j)
+#
+#
+#
+#
+#             d[i].append(number_element_per_node_this_label)
+#
+#         #print('dico',d)
+#
+#     return indexesEachNodeCase,d
+
+# def get_indices_each_node_case2(n_nodes, maxCase, label_list):
+#     indexesEachNodeCase = []
+#     for i in range(0, maxCase):
+#         indexesEachNodeCase.append([])
+#
+#     for i in range(0, n_nodes):
+#         for j in range(0, maxCase):
+#             indexesEachNodeCase[j].append([])
+#
+#     # indexesEachNode is a big list that contains N-number of sublists. Sublist n contains the indexes that should be assigned to node n
+#
+#     minLabel = min(label_list)
+#     maxLabel = max(label_list)
+#     numLabels = maxLabel - minLabel + 1
+#
+#     for i in range(0, len(label_list)):
+#
+#         # case 1
+#
+#         #randomperm = np.random.permutation(len(train))
+#         #indexesEachNodeCase[0][(i % n_nodes)].append(randomperm[i])
+#         indexesEachNodeCase[0][(i % n_nodes)].append(i)
+#         # if i % n_nodes==0:
+#         #     print('-----')
+#         #     print('label',label_list[i])
+#         #     print('indice',i)
+#         #     print('-----')
+#
+#         # case 2
+#
+#         tmp_target_node=int((label_list[i]-minLabel) %n_nodes)
+#         if n_nodes>numLabels:
+#             tmpMinIndex=0
+#             tmpMinVal=math.inf
+#             for n in range(0,n_nodes):
+#                 if (n)%numLabels==tmp_target_node and len(indexesEachNodeCase[1][n])<tmpMinVal:
+#                     tmpMinVal=len(indexesEachNodeCase[1][n])
+#                     tmpMinIndex=n
+#             tmp_target_node=tmpMinIndex
+#
+#         indexesEachNodeCase[1][tmp_target_node].append(i)
+#
+#
+#     return indexesEachNodeCase
 
 
 
