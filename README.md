@@ -90,7 +90,7 @@ The results folder contains different files:
 
 - dico-order.csv : ranking of the samples by " importance" order, with their respective loss function values evaluate on the benchmark/validation model
 - dico-validation.csv : loss function values obtained on the benchmark/validation dataset
-- loss-accu-validation.csv : log of the training of the validation dataset
+- loss-accu-validation.csv : log of the training of the validation dataset (format : iterations, loss train, loss test, accu train, accu test)
 
 #### Final results : 
 - loss-acc.csv :  final results with the following format :

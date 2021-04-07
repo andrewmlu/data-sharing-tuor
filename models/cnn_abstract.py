@@ -24,6 +24,7 @@ class ModelCNNAbstract(abc.ABC):
         self.y_ = None
         self.y = None
         self.cross_entropy = None
+        self.cross_entropy_vector = None
         self.acc = None
 
         self.init = None
@@ -372,6 +373,30 @@ class ModelCNNAbstract(abc.ABC):
                 l = []
 
             # sess.close()
+
+        return val
+
+
+    def loss_vector(self, imgs, labels, w, sampleIndices=None):
+        # tf.reset_default_graph()
+        # self.create_graph()
+
+        if not self.graph_created:
+            raise Exception('Graph is not created. Call create_graph() first.')
+
+        # with tf.Session() as sess:
+        self.assign_flattened_weight(self.session, w)
+
+        if sampleIndices is None:
+            sampleIndices = range(0, len(labels))
+
+        val = 0
+        l = []
+
+        val = self.session.run(self.cross_entropy_vector,
+                                        feed_dict={self.x: [imgs[i] for i in sampleIndices],
+                                                   self.y_: [labels[i] for i in sampleIndices]})
+
 
         return val
 

@@ -91,7 +91,10 @@ class ModelCNNMnist(ModelCNNAbstract):
 
         self.cross_entropy = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.math.log(self.y), reduction_indices=[1]))+ tf.math.divide(1,self.n_all_weights)*self.L2regularizer
 
-                             #+ tf.math.divide(0.02,self.n_all_weights) * self.EWCregularizer
+        self.cross_entropy_vector = ( -tf.reduce_sum(self.y_ * tf.math.log(self.y), reduction_indices=[1])) + tf.math.divide(1,
+                                                                                                   self.n_all_weights) * self.L2regularizer
+
+        #+ tf.math.divide(0.02,self.n_all_weights) * self.EWCregularizer
 
         # if self.star_vars == []:
         #     self.cross_entropy = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))

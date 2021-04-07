@@ -58,16 +58,24 @@ def main():
         lists_indices_per_label_validation, validation_image, validation_label = get_benchmark_dataset(
             sim, size_validation_set, cfg)
 
+
         # Train benchmark (validation) dataset
+
+        print('-----Start training validation dataset ---------')
 
         indices_to_keep, w_validation = train_validation(
             indices_each_node_case_copy_init, model, dim_w, sim, cfg,
             lists_indices_per_label_validation, validation_image, validation_label)
-
+        print('-----Training validation done ---------')
+        print('-----Start filtering data ---------')
         # Filter the data with the selected data (according to the approach selected in the config (option: 0,1,2,3)
         indices_each_node_case, list_nodes_not_enough_data = get_indices_each_node_opt(
             cfg, indices_each_node_case, indices_each_node_case_copy_init,
             indices_to_keep)
+
+        print('End Filtering, Start FL process')
+
+
 
         # Start the federated training
 

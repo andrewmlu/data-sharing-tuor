@@ -192,16 +192,23 @@ def train_validation(indices_each_node_case_copy_init, model, dim_w, sim, cfg,
     # RANK ALL DATA POINT IN EACH NODE
     for n in range(0, cfg.n_nodes):
 
+        norm_diff_vec = model.loss_vector(train_image_all,train_label_all,w_validation,indices_each_node_case_copy_init[cfg.case][n])
+        #print(len(norm_diff_vec))
+        #print('check',len(indices_each_node_case_copy_init[cfg.case][n]))
+        count = 0
+
         for s in indices_each_node_case_copy_init[cfg.case][n]:
 
-            norm_diff = model.loss(train_image_all[s:s + 1],
-                                   train_label_all[s:s + 1], w_validation)
-            dic_ind_grad[s] = (norm_diff, n,
+            #norm_diff = model.loss(train_image_all[s:s + 1],
+                                  # train_label_all[s:s + 1], w_validation)
+
+            dic_ind_grad[s] = (norm_diff_vec[count], n,
                                get_index_from_one_hot_label(
                                    train_label_all[s]))
+            count+=1
 
     sorted_d = sorted(dic_ind_grad.items(), key=operator.itemgetter(1))
-    print('here',sorted_d)
+    #print('here',sorted_d)
 
     write_dictionary_data(cfg.results_file_path, '/dico-order.csv', sorted_d)
 
