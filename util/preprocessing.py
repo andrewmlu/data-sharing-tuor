@@ -44,7 +44,6 @@ def multiple_to_single_dataset(cfg):
         # make sure every dataset has train_label_orig
         if len(train_label_orig) == 0:
             train_label_orig = get_train_label_orig_from_hot(train_label)
-
         train_image_all.extend(train_image)
         train_label_all.extend(train_label)
         test_image_all.extend(test_image)
@@ -232,17 +231,6 @@ def get_indices_each_node_opt(cfg,
                 list_nodes_not_enough_data.append(n)
 
     elif option == 2:
-        list_nodes_not_enough_data = []
-        for n in range(0, cfg.n_nodes):
-            indices_each_node_case[cfg.case][n] = [
-                x for x in indices_each_node_case_copy_init[cfg.case][n]
-                if x < len(keep_track_indices_dataset_train[0])
-            ]
-            # check if  the number of point in a node is smaller than batch size
-            if len(indices_each_node_case[cfg.case][n]) == 0:
-                list_nodes_not_enough_data.append(n)
-
-    elif option == 3:
 
         list_nodes_not_enough_data = []
         for n in range(0, cfg.n_nodes):

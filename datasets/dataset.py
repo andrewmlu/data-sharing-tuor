@@ -102,6 +102,23 @@ def get_data(dataset, total_data, dataset_file_path=os.path.dirname(__file__), s
             train_label_orig.append(label[0])
 
 
+
+    elif dataset == 'SVNH_GRAY':
+        train_image = np.load(dataset_file_path + '/svnh-gray-28by28/svnh_train_image_gray.npy')
+        train_label = np.load(dataset_file_path + '/svnh-gray-28by28/svnh_train_label_gray.npy')
+        test_image = np.load(dataset_file_path + '/svnh-gray-28by28/svnh_test_image_gray.npy')
+        test_label = np.load(dataset_file_path + '/svnh-gray-28by28/svnh_test_label_gray.npy')
+        train_label_orig = []
+
+    elif dataset == 'CIFAR_10_GRAY':
+        train_image = np.load(dataset_file_path + '/cifar-gray-28by28/cifar_train_image_gray.npy')
+        train_label = np.load(dataset_file_path + '/cifar-gray-28by28/cifar_train_label_gray.npy')
+        test_image = np.load(dataset_file_path + '/cifar-gray-28by28/cifar_test_image_gray.npy')
+        test_label = np.load(dataset_file_path + '/cifar-gray-28by28/cifar_test_label_gray.npy')
+        train_label_orig = []
+
+
+
     else:
         raise Exception('Unknown dataset name.')
 

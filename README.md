@@ -26,9 +26,9 @@ The following structure is expected in the main directory:
 
 
 - To run the experiment use `/main.py --config <name> --approach <approach> --samples_per_dataset <samples per dataset>, --pc_validation <pc>, --sim  <sim>` where `name` is the name of the config file corresponding to the experiment [ `config_mnist_fashion`],
-where `approach` is [`0`,`1`,`2`,`3`], with `0` for our proposed approach, `1` for 'ideal' baseline (i.e. without noise),  `2` 'random' baseline (i.e. filtered data is selected randomly), option `3` 'naive' baseline (i.e. focus dataset and noise are trained together), 
+where `approach` is [`0`,`1`,`2`], with `0` for our proposed approach, `1` for 'ideal' baseline (i.e. without noise),  `2` 'naive' baseline (i.e. focus dataset and noise are trained together), 
 where `samples per dataset` is the number of data samples per dataset, where `pc` is percentage of the target/focus dataset to use as benchmark (i.e. validation) and `sim` is the number of runs to average the results
-(Note: for baseline 1-3 `pc`  can be set to any value, as it doesn't matter for the final results)
+(Note: for baseline 1-2 `pc`  can be set to any value, as it doesn't matter for the final results)
 
 ###  Examples:
 
@@ -36,27 +36,21 @@ where `samples per dataset` is the number of data samples per dataset, where `pc
 ##### Our approoch 
 
 ```shell
-python3 main.py --config config_mnist_fashion --approach 0  --samples_per_dataset 3000 --pc_validation 0.05 --sim 1 
+python3 main.py --config config_strong_noise --approach 0  --samples_per_dataset 10000 --pc_validation 0.05 --sim 1 
 ````
 
 ##### Ideal Baseline
 
 ```shell
-python3 main.py --config config_mnist_fashion --approach 1  --samples_per_dataset 3000 --pc_validation 0.05 --sim 1 
+python3 main.py --config config_strong_noise --approach 1  --samples_per_dataset 10000 --pc_validation 0.05 --sim 1 
 
 ````
-##### Random baseline
 
-```shell
-
-python3 main.py --config config_mnist_fashion --approach 2  --samples_per_dataset 3000 --pc_validation 0.05 --sim 1 
-
-````
 
 ##### Naive Baseline 
 
 ```shell
-python3 main.py --config config_mnist_fashion --approach 3  --samples_per_dataset 3000 --pc_validation 0.05 --sim 1 
+python3 main.py --config config_strong_noise --approach 2  --samples_per_dataset 10000 --pc_validation 0.05 --sim 1 
 
 ````
 
@@ -69,7 +63,7 @@ In the config files, located in the configs folder,  one can specify:
 #####  Target/noise scenario 
 - dataset_list : Each scenario is described as a list, where the first dataset of the list is the target/focus dataset and the remaining dataset(s) is the noise
  For example: 
-  - dataset_list= [dataset_mnist,dataset_fashion]
+  - dataset_list= [dataset_mnist,dataset_fashion,dataset_cifar10_gray,dataset_svnh_gray]
   
   
 ##### Training (i.e. both validation and federated)

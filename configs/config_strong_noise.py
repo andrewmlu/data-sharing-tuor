@@ -1,9 +1,10 @@
 # Scenario , define target/ noise
 dataset_mnist = 'MNIST_ORIG_ALL_LABELS'
 dataset_fashion = 'MNIST_FASHION'
-
+dataset_svnh_gray= 'SVNH_GRAY'
+dataset_cifar10_gray = 'CIFAR_10_GRAY'
 # always put dataset "focus" in first position, and the "noise" dataset after
-dataset_list = [dataset_mnist,dataset_fashion,dataset_fashion]
+dataset_list = [dataset_mnist,dataset_fashion,dataset_fashion,dataset_cifar10_gray,dataset_svnh_gray]
 
 
 
