@@ -4,7 +4,7 @@ dataset_fashion = 'MNIST_FASHION'
 dataset_svnh_gray= 'SVNH_GRAY'
 dataset_cifar10_gray = 'CIFAR_10_GRAY'
 # always put dataset "focus" in first position, and the "noise" dataset after
-dataset_list = [dataset_mnist,dataset_fashion,dataset_fashion,dataset_cifar10_gray,dataset_svnh_gray]
+dataset_list = [dataset_fashion,dataset_mnist,dataset_fashion,dataset_cifar10_gray,dataset_svnh_gray]
 
 
 
@@ -15,7 +15,7 @@ percentage_batch = 0.16
 step_size = 0.01
 
 # Federated Learning
-total_iterations = 40000
+total_iterations = 20000
 n_nodes = 10 # need to be larger or equal to 10
 
 
