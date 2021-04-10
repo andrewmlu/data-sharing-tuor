@@ -16,7 +16,7 @@ The following structure is expected in the main directory:
 ```
 ./configs                   : Settings for each experiment
 ./datasets                  : Folders with dataset files and functions related to dataset
-./datasets/daset_files      : Folders where dataset files need to be saved
+./datasets/daset_files      : Folders where dataset files need to be download
 ./models                    : Model architectures
 ./results                   : Results are saved in here , this folder will be automatically created
 ./utils                     : Helper functions
@@ -32,17 +32,18 @@ where `samples per dataset` is the number of data samples per dataset, where `pc
 
 ###  Examples:
 
+####   Experiment Strong noise, Target : Fashion :
 
 ##### Our approoch 
 
 ```shell
-python3 main.py --config config_strong_noise --approach 0  --samples_per_dataset 10000 --pc_validation 0.05 --sim 1 
+python3 main.py --config config_target_fashion --approach 0  --samples_per_dataset 500000 --pc_validation 0.03 --sim 1 
 ````
 
 ##### Ideal Baseline
 
 ```shell
-python3 main.py --config config_strong_noise --approach 1  --samples_per_dataset 10000 --pc_validation 0.05 --sim 1 
+python3 main.py --config config_target_fashion --approach 1  --samples_per_dataset 500000 --pc_validation 0.03 --sim 1 
 
 ````
 
@@ -50,7 +51,30 @@ python3 main.py --config config_strong_noise --approach 1  --samples_per_dataset
 ##### Naive Baseline 
 
 ```shell
-python3 main.py --config config_strong_noise --approach 2  --samples_per_dataset 10000 --pc_validation 0.05 --sim 1 
+python3 main.py --config config_target_fashion --approach 2  --samples_per_dataset 500000 --pc_validation 0.03 --sim 1 
+
+````
+
+####   Experiment Strong noise, Target : SVNH :
+
+##### Our approoch 
+
+```shell
+python3 main.py --config config_target_svnh --approach 0  --samples_per_dataset 500000 --pc_validation 0.03 --sim 1 
+````
+
+##### Ideal Baseline
+
+```shell
+python3 main.py --config config_target_svhn --approach 1  --samples_per_dataset 500000 --pc_validation 0.03 --sim 1 
+
+````
+
+
+##### Naive Baseline 
+
+```shell
+python3 main.py --config config_target_svnh --approach 2  --samples_per_dataset 500000 --pc_validation 0.03 --sim 1 
 
 ````
 

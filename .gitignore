@@ -1,6 +1,8 @@
 .idea/
 .DS_Store
 __pycache__/
-datasets/dataset_files/svnh-gray-28by28/
-datasets/dataset_files/cifar-gray-28by28/
+datasets/dataset_files
 results/
+datasets/datasets/test_32x32.mat
+datasets/datasets
+datasets/MNIST

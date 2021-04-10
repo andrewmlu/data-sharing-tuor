@@ -32,6 +32,7 @@ def get_index_from_one_hot_label(label):
 
 def get_data(dataset, total_data, dataset_file_path=os.path.dirname(__file__), sim_round=None, use_test_client_to_data_dict=False):
     test_client_to_data_dict = None
+    print(dataset)
 
     if dataset=='MNIST_ORIG_EVEN_ODD' or dataset=='MNIST_ORIG_ALL_LABELS':
         from datasets.mnist_extractor import mnist_extract
@@ -101,6 +102,34 @@ def get_data(dataset, total_data, dataset_file_path=os.path.dirname(__file__), s
             label = get_index_from_one_hot_label(train_label[i])
             train_label_orig.append(label[0])
 
+    elif dataset == 'SVNH':
+        train_image = np.load(dataset_file_path + '/SVNH/train_image_svnh.npy')
+        train_label = np.load(dataset_file_path + '/SVNH/train_label_svnh_hot.npy')
+        test_image = np.load(dataset_file_path + '/SVNH/test_image_svnh.npy')
+        test_label = np.load(dataset_file_path + '/SVNH/test_label_svnh_hot.npy')
+        train_label_orig = []
+
+    elif dataset == 'CIFAR_10':
+        from datasets.cifar_10_extractor import cifar_10_extract
+
+        if total_data > 50000:
+            total_data_train = 50000
+        else:
+            total_data_train = total_data
+
+        if total_data > 10000:
+            total_data_test = 10000
+        else:
+            total_data_test = total_data
+
+        train_image, train_label = cifar_10_extract(0, total_data_train, True, dataset_file_path)
+        test_image, test_label = cifar_10_extract(0, total_data_test, False, dataset_file_path)
+
+        train_label_orig = []
+        for i in range(0, len(train_label)):
+            label = get_index_from_one_hot_label(train_label[i])
+            train_label_orig.append(label[0])
+
 
 
     elif dataset == 'SVNH_GRAY':
@@ -116,6 +145,24 @@ def get_data(dataset, total_data, dataset_file_path=os.path.dirname(__file__), s
         test_image = np.load(dataset_file_path + '/cifar-gray-28by28/cifar_test_image_gray.npy')
         test_label = np.load(dataset_file_path + '/cifar-gray-28by28/cifar_test_label_gray.npy')
         train_label_orig = []
+
+    elif dataset == 'MNIST_ORIG_ALL_LABELS_RGB':
+        train_image = np.load(dataset_file_path + '/mnist_rgb_32by32/mnist_train_image_rgb.npy')
+        train_label = np.load(dataset_file_path + '/mnist_rgb_32by32/mnist_train_label_rgb.npy')
+        test_image = np.load(dataset_file_path + '/mnist_rgb_32by32/mnist_test_image_rgb.npy')
+        test_label = np.load(dataset_file_path + '/mnist_rgb_32by32/mnist_test_label_rgb.npy')
+        train_label_orig = []
+
+    elif dataset == 'MNIST_FASHION_RGB':
+        train_image = np.load(dataset_file_path + '/fashion_rgb_32by32/fashion_train_image_rgb.npy')
+        train_label = np.load(dataset_file_path + '/fashion_rgb_32by32/fashion_train_label_rgb.npy')
+        test_image = np.load(dataset_file_path + '/fashion_rgb_32by32/fashion_test_image_rgb.npy')
+        test_label = np.load(dataset_file_path + '/fashion_rgb_32by32/fashion_test_label_rgb.npy')
+        train_label_orig = []
+
+
+
+
 
 
 
