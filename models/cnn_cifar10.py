@@ -55,6 +55,8 @@ class ModelCNNCifar10(ModelCNNAbstract):
         #self.cross_entropy = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
         #try to see if it improoves the nan
         self.cross_entropy = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(tf.clip_by_value(self.y, 1e-10, 1.0)), reduction_indices=[1]))
+
+        self.cross_entropy_vector = -tf.reduce_sum(self.y_ * tf.log(tf.clip_by_value(self.y, 1e-10, 1.0)), reduction_indices=[1])
         #cross_entropy = self.y_ * tf.log(tf.clip_by_value(self.y, 1e-10, 1.0))
 
         self.all_weights = [self.W_conv1, self.b_conv1, self.W_conv2, self.b_conv2,
