@@ -126,7 +126,7 @@ for i, (inputs, labels) in enumerate(train_dl, 1):
 
 test_img = []
 test_label = []
-for i, (inputs, labels) in enumerate(train_dl, 1):
+for i, (inputs, labels) in enumerate(test_dl, 1):
     t = np.array(inputs).shape[0]
     img = np.array(inputs).reshape((t,28*28))
     test_img.extend(img)
@@ -140,7 +140,7 @@ for i, (inputs, labels) in enumerate(train_dl, 1):
 np.save('dataset_files/svnh-gray-28by28/svnh_train_image_gray.npy',train_img)
 np.save('dataset_files/svnh-gray-28by28/svnh_train_label_gray.npy',train_label)
 np.save('dataset_files/svnh-gray-28by28/svnh_test_image_gray.npy',test_img)
-np.save('dataset_files/svnh-gray-28by28/svnh_test_image_gray.npy',test_label)
+np.save('dataset_files/svnh-gray-28by28/svnh_test_label_gray.npy',test_label)
 
 datadir = 'datasets'
 train_dl, test_dl = get_single_dataloader('SVHN', datadir, '3channel', 32)
@@ -159,7 +159,7 @@ for i, (inputs, labels) in enumerate(train_dl, 1):
 
 test_img = []
 test_label = []
-for i, (inputs, labels) in enumerate(train_dl, 1):
+for i, (inputs, labels) in enumerate(test_dl, 1):
     t = np.array(inputs).shape[0]
     img = np.array(inputs).reshape((t,32*32*3))
     test_img.extend(img)
