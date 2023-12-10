@@ -3,6 +3,9 @@ import torchvision.transforms as transforms
 import torch.utils.data as data
 import numpy as np
 from torch.nn import functional
+import matplotlib.pyplot as plt
+
+# this serves as the main dataset download function, not just SVHN -- see commented sections below for data extraction runs
 
 
 def get_single_dataloader(dataset, datadir, transform, size):
@@ -107,76 +110,127 @@ def get_single_dataloader(dataset, datadir, transform, size):
 
 
 datadir = 'datasets'
+train_dl, test_dl = get_single_dataloader('SVHN', datadir, '1channel', 28)
+
+train_img = []
+train_label = []
+for i, (inputs, labels) in enumerate(train_dl, 1):
+    t = np.array(inputs).shape[0]
+    img = np.array(inputs).reshape((t,28*28))
+    train_img.extend(img)
+    print(np.array(train_img).shape)
+
+    a = np.array(functional.one_hot(labels, num_classes=10))
+    print(a.shape)
+    train_label.extend(a)
+
+test_img = []
+test_label = []
+for i, (inputs, labels) in enumerate(train_dl, 1):
+    t = np.array(inputs).shape[0]
+    img = np.array(inputs).reshape((t,28*28))
+    test_img.extend(img)
+    print(np.array(test_img).shape)
+
+    a = np.array(functional.one_hot(labels, num_classes=10))
+    print(a.shape)
+    test_label.extend(a)
+
+
+np.save('dataset_files/svnh-gray-28by28/svnh_train_image_gray.npy',train_img)
+np.save('dataset_files/svnh-gray-28by28/svnh_train_label_gray.npy',train_label)
+np.save('dataset_files/svnh-gray-28by28/svnh_test_image_gray.npy',test_img)
+np.save('dataset_files/svnh-gray-28by28/svnh_test_image_gray.npy',test_label)
+
+datadir = 'datasets'
 train_dl, test_dl = get_single_dataloader('SVHN', datadir, '3channel', 32)
-import matplotlib.pyplot as plt
-# train_img = []
-# for i, (inputs, labels) in enumerate(test_dl, 1):
-#     t = np.array(inputs).shape[0]
-#     img = np.array(inputs).reshape((t,32*32*3))
-#     train_img.extend(img)
-#     print(np.array(train_img).shape)
-#
-#
-#
-# np.save('dataset_files/SVNH/test_image_svhn.npy',train_img)
+
+train_img = []
+train_label = []
+for i, (inputs, labels) in enumerate(train_dl, 1):
+    t = np.array(inputs).shape[0]
+    img = np.array(inputs).reshape((t,32*32*3))
+    train_img.extend(img)
+    print(np.array(train_img).shape)
+
+    a = np.array(functional.one_hot(labels, num_classes=10))
+    print(a.shape)
+    train_label.extend(a)
+
+test_img = []
+test_label = []
+for i, (inputs, labels) in enumerate(train_dl, 1):
+    t = np.array(inputs).shape[0]
+    img = np.array(inputs).reshape((t,32*32*3))
+    test_img.extend(img)
+    print(np.array(test_img).shape)
+
+    a = np.array(functional.one_hot(labels, num_classes=10))
+    print(a.shape)
+    test_label.extend(a)
+
+
+np.save('dataset_files/SVNH/train_image_svhn.npy',train_img)
+np.save('dataset_files/SVNH/train_label_svnh_hot.npy',train_label)
+np.save('dataset_files/SVNH/test_image_svhn.npy',test_img)
+np.save('dataset_files/SVNH/test_label_svnh_hot.npy',test_label)
+
+
+# for cifar
+
+datadir = 'datasets'
+train_dl, test_dl = get_single_dataloader('CIFAR10', datadir, '1channel', 28)
+
+train_img = []
+train_label = []
+for i, (inputs, labels) in enumerate(train_dl, 1):
+    t = np.array(inputs).shape[0]
+    img = np.array(inputs).reshape((t,28*28))
+    train_img.extend(img)
+    print(np.array(train_img).shape)
+
+    a = np.array(functional.one_hot(labels, num_classes=10))
+    print(a.shape)
+    train_label.extend(a)
+t = np.array(train_img)[0].reshape((28,28))
+print(t.shape)
+plt.imshow(t,cmap='gray')
+plt.show()
+
+np.save('dataset_files/cifar-gray-28by28/cifar_train_image_gray.npy',train_img)
+np.save('dataset_files/cifar-gray-28by28/cifar_train_label_gray.npy',train_label)
+
+
+test_img = []
+test_label = []
+for i, (inputs, labels) in enumerate(test_dl, 1):
+    t = np.array(inputs).shape[0]
+    img = np.array(inputs).reshape((t,28*28))
+    test_img.extend(img)
+    print(np.array(test_img).shape)
+
+    a = np.array(functional.one_hot(labels, num_classes=10))
+    print(a.shape)
+    test_label.extend(a)
+t = np.array(test_img)[0].reshape((28,28))
+print(t.shape)
+plt.imshow(t,cmap='gray')
+plt.show()
+
+np.save('dataset_files/cifar-gray-28by28/cifar_test_image_gray.npy',test_img)
+np.save('dataset_files/cifar-gray-28by28/cifar_test_label_gray.npy',test_label)
 
 #
-# train_label = []
-# for i, (inputs, labels) in enumerate(train_dl, 1):
-#     #t = np.array(labels).shape[0]
-#     #label = np.array(inputs).reshape((t,28*28))
-#     #train_img.extend(img)
-#
-#     a = np.array(functional.one_hot(labels, num_classes=10))
-#     print(a.shape)
-#     train_label.extend(a)
-#
-# print(np.array(train_label).shape)
-# np.save('dataset_files/SVNH/train_label_svnh_hot.npy',train_label)
-#
-#
-# # for cifar
 
+
+#
+#
+
+
+# # mnist
 # datadir = 'datasets'
-# train_dl, test_dl = get_single_dataloader('CIFAR10', datadir, '1channel', 28)
+# train_dl, test_dl = get_single_dataloader('MNIST', datadir, '3channel', 32)
 #
-# # train_img = []
-# # for i, (inputs, labels) in enumerate(test_dl, 1):
-# #     t = np.array(inputs).shape[0]
-# #     img = np.array(inputs).reshape((t,28*28))
-# #     train_img.extend(img)
-# #     print(np.array(train_img).shape)
-# # t = np.array(train_img)[0].reshape((28,28))
-# # print(t.shape)
-# # plt.imshow(t,cmap='gray')
-# # plt.show()
-# #
-# # np.save('dataset_files/cifar-gray-28by28/cifar_test_image_gray.npy',train_img)
-# #
-#
-#
-#
-# train_label = []
-# for i, (inputs, labels) in enumerate(test_dl, 1):
-#     #t = np.array(labels).shape[0]
-#     #label = np.array(inputs).reshape((t,28*28))
-#     #train_img.extend(img)
-#
-#     a = np.array(functional.one_hot(labels, num_classes=10))
-#     print(a.shape)
-#     train_label.extend(a)
-#
-# print(np.array(train_label).shape)
-# #np.save('dataset_files/cifar-gray-28by28/cifar_train_label_gray.npy',train_label)
-# np.save('dataset_files/cifar-gray-28by28/cifar_test_label_gray.npy',train_label)
-#
-#
-
-
-# mnist
-#datadir = 'datasets'
-#train_dl, test_dl = get_single_dataloader('MNIST', datadir, '3channel', 32)
-
 #
 # train_img = []
 # for i, (inputs, labels) in enumerate(test_dl, 1):
