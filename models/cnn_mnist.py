@@ -5,6 +5,8 @@ import tensorflow as tf
 from models.cnn_abstract import ModelCNNAbstract
 
 
+tf.compat.v1.disable_eager_execution()  # debug -- disable eager issue in colab
+
 def weight_variable(shape):
     initial = tf.random.truncated_normal(shape, stddev=0.1)
     # initial = tf.constant(0.1, shape=shape)

@@ -203,6 +203,9 @@ def get_n_sample_to_keep(results_file_path,total_n_sample,sorted_d): # select n_
 
 
     n_sample_to_keep=steps[np.argmin(max_each_cut)]
+    lambda_star = distance_list[n_sample_to_keep]
+    print('lambda star', lambda_star)
+    print('p', n_sample_to_keep/total_n_sample)
     print('n sample to keep',n_sample_to_keep)
 
     indices_to_keep = []
