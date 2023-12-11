@@ -32,7 +32,7 @@ def get_index_from_one_hot_label(label):
 
 def get_data(dataset, total_data, dataset_file_path=os.path.dirname(__file__), sim_round=None, use_test_client_to_data_dict=False):
     test_client_to_data_dict = None
-    print(dataset)
+    # print(dataset)
 
     if dataset=='MNIST_ORIG_EVEN_ODD' or dataset=='MNIST_ORIG_ALL_LABELS':
         from datasets.mnist_extractor import mnist_extract

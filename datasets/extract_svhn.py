@@ -118,10 +118,10 @@ for i, (inputs, labels) in enumerate(train_dl, 1):
     t = np.array(inputs).shape[0]
     img = np.array(inputs).reshape((t,28*28))
     train_img.extend(img)
-    print(np.array(train_img).shape)
+    # print(np.array(train_img).shape)
 
     a = np.array(functional.one_hot(labels, num_classes=10))
-    print(a.shape)
+    # print(a.shape)
     train_label.extend(a)
 
 test_img = []
@@ -130,10 +130,10 @@ for i, (inputs, labels) in enumerate(test_dl, 1):
     t = np.array(inputs).shape[0]
     img = np.array(inputs).reshape((t,28*28))
     test_img.extend(img)
-    print(np.array(test_img).shape)
+    # print(np.array(test_img).shape)
 
     a = np.array(functional.one_hot(labels, num_classes=10))
-    print(a.shape)
+    # print(a.shape)
     test_label.extend(a)
 
 
@@ -151,10 +151,10 @@ for i, (inputs, labels) in enumerate(train_dl, 1):
     t = np.array(inputs).shape[0]
     img = np.array(inputs).reshape((t,32*32*3))
     train_img.extend(img)
-    print(np.array(train_img).shape)
+    # print(np.array(train_img).shape)
 
     a = np.array(functional.one_hot(labels, num_classes=10))
-    print(a.shape)
+    # print(a.shape)
     train_label.extend(a)
 
 test_img = []
@@ -163,10 +163,10 @@ for i, (inputs, labels) in enumerate(test_dl, 1):
     t = np.array(inputs).shape[0]
     img = np.array(inputs).reshape((t,32*32*3))
     test_img.extend(img)
-    print(np.array(test_img).shape)
+    # print(np.array(test_img).shape)
 
     a = np.array(functional.one_hot(labels, num_classes=10))
-    print(a.shape)
+    # print(a.shape)
     test_label.extend(a)
 
 
@@ -187,13 +187,13 @@ for i, (inputs, labels) in enumerate(train_dl, 1):
     t = np.array(inputs).shape[0]
     img = np.array(inputs).reshape((t,28*28))
     train_img.extend(img)
-    print(np.array(train_img).shape)
+    # print(np.array(train_img).shape)
 
     a = np.array(functional.one_hot(labels, num_classes=10))
-    print(a.shape)
+    # print(a.shape)
     train_label.extend(a)
 t = np.array(train_img)[0].reshape((28,28))
-print(t.shape)
+# print(t.shape)
 plt.imshow(t,cmap='gray')
 plt.show()
 
@@ -207,13 +207,13 @@ for i, (inputs, labels) in enumerate(test_dl, 1):
     t = np.array(inputs).shape[0]
     img = np.array(inputs).reshape((t,28*28))
     test_img.extend(img)
-    print(np.array(test_img).shape)
+    # print(np.array(test_img).shape)
 
     a = np.array(functional.one_hot(labels, num_classes=10))
-    print(a.shape)
+    # print(a.shape)
     test_label.extend(a)
 t = np.array(test_img)[0].reshape((28,28))
-print(t.shape)
+# print(t.shape)
 plt.imshow(t,cmap='gray')
 plt.show()
 

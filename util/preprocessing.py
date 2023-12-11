@@ -160,7 +160,7 @@ def train_validation(indices_each_node_case_copy_init, model, dim_w, sim, cfg,
             max_val = loss_test
             counter_convergence_reached = 0
         else:
-            if i > 10:
+            if i > 5:
                 counter_convergence_reached += 1
                 #print('counter', counter_convergence_reached)
 

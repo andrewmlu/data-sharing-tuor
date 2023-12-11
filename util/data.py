@@ -208,6 +208,7 @@ def get_n_sample_to_keep(results_file_path,total_n_sample,sorted_d): # select n_
     print('p', n_sample_to_keep/total_n_sample)
     print('n sample to keep',n_sample_to_keep)
     print('total n sample',total_n_sample)
+    exit(0)
 
     indices_to_keep = []
     for i in range(0, n_sample_to_keep):

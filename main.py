@@ -6,7 +6,8 @@ import copy
 from argparse import ArgumentParser
 import importlib
 import os
-
+import tensorflow as tf
+from tensorflow.python.client import device_lib
 parser = ArgumentParser()
 
 
@@ -18,6 +19,7 @@ parser.add_argument('--sim', '-s',required=True)
 
 
 def main():
+    print(device_lib.list_local_devices())
 
     args = parser.parse_args()
     cfg = importlib.import_module('configs.' + args.config)

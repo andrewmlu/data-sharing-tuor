@@ -1,7 +1,6 @@
 pc_validation=${1:-0.03}
 samples=${2:-10000}
 
-git clone https://github.com/andrewmlu/data-sharing-tuor.git
 git pull
 
 # need python<=3.7 https://stackoverflow.com/questions/63168301/how-to-change-the-python-version-from-default-3-5-to-3-8-of-google-colab

@@ -489,6 +489,11 @@ class ModelCNNAbstract(abc.ABC):
 
 
     def run_one_step_consecutive_training(self, imgs, labels, sampleIndices):
+        if tf.compat.v1.config.experimental.list_physical_devices('GPU'):
+            print("TensorFlow **IS** using the GPU")
+        else:
+            print("TensorFlow **IS NOT** using the GPU")
+
         self.session.run(self.optimizer_op,
                  feed_dict={self.x: [imgs[i] for i in sampleIndices], self.y_: [labels[i] for i in sampleIndices]})
 

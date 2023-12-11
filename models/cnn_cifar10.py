@@ -61,15 +61,15 @@ class ModelCNNCifar10(ModelCNNAbstract):
 
         self.all_weights = [self.W_conv1, self.b_conv1, self.W_conv2, self.b_conv2,
                             self.W_fc1, self.b_fc1, self.W_fc2, self.b_fc2]
-        print('self weights attention')
-        print(self.all_weights)
+        # print('self weights attention')
+        # print(self.all_weights)
 
         self._assignment_init()
 
         self._optimizer_init(learning_rate=learning_rate)
 
         self.grad = self.optimizer.compute_gradients(self.cross_entropy, var_list=self.all_weights)
-        print(self.grad)
+        # print(self.grad)
 
         self.correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
         self.acc = tf.reduce_mean(tf.cast(self.correct_prediction, tf.float32))
