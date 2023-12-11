@@ -11,7 +11,7 @@ dataset_list = [dataset_fashion,dataset_mnist,dataset_fashion,dataset_cifar10_gr
 # Training in General
 n_category = 10
 model_name = 'ModelCNNMnist'
-percentage_batch = 0.16  # percent of data for a given node in each batch (since nodes vary in number of data points)
+percentage_batch = 0.16  # percent of data for a given node in each batch
 step_size = 0.01
 
 # Federated Learning
